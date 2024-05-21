@@ -11,6 +11,9 @@ const validatePhone = (phone) => {
 };
 
 const createRequest = (req, res) => {
+    // Логирование полученного объекта
+    console.log('Received request body:', req.body);
+
     const { phone, message, utm_source, utm_medium, utm_campaign } = req.body;
 
     if (!validatePhone(phone)) {
@@ -25,7 +28,9 @@ const createRequest = (req, res) => {
 
     let utmString = '';
     if (utm_source || utm_medium || utm_campaign) {
-        utmString = `UTM Source: ${utm_source || ''}, UTM Medium: ${utm_medium || ''}, UTM Campaign: ${utm_campaign || ''}`;
+        utmString = `UTM Source: ${utm_source || ''}, UTM Medium: ${
+            utm_medium || ''
+        }, UTM Campaign: ${utm_campaign || ''}`;
     }
 
     const botMessage = `New request received:\nPhone: ${phone}\nMessage: ${message}\n${utmString}`;
