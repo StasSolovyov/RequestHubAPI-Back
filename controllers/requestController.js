@@ -11,7 +11,7 @@ const validatePhone = (phone) => {
 };
 
 const createRequest = (req, res) => {
-    const { phone, message } = req.body;
+    const { phone, message, utm_source, utm_medium, utm_campaign } = req.body;
 
     if (!validatePhone(phone)) {
         return res.status(400).json({ error: 'Invalid phone number format' });
@@ -23,12 +23,9 @@ const createRequest = (req, res) => {
 
     addRequest(phone, message);
 
-    const utmParams = req.query;
     let utmString = '';
-    if (utmParams) {
-        utmString = Object.entries(utmParams)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join(', ');
+    if (utm_source || utm_medium || utm_campaign) {
+        utmString = `UTM Source: ${utm_source || ''}, UTM Medium: ${utm_medium || ''}, UTM Campaign: ${utm_campaign || ''}`;
     }
 
     const botMessage = `New request received:\nPhone: ${phone}\nMessage: ${message}\n${utmString}`;
